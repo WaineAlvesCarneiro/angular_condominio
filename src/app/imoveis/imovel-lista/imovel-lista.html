@@ -1,0 +1,31 @@
+<div class="container">
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <h2 style="margin: 0;">Lista de Imoveis</h2>
+    <button class="btn primary" routerLink="/imoveis/novo">Novo Imóvel</button>
+  </div>
+
+  <table style="margin-top: 20px; height: 60px; width: 100%;" class="product-table">
+    <thead>
+      <tr style="background-color:darkgray; height: 30px; width: 100%;">
+        <th>Código</th>
+        <th>Apartamento</th>
+        <th>Bloco</th>
+        <th>Box</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background-color:bisque; height: 30px; width: 100%;" *ngFor="let imovel of imoveis">
+        <td style="padding-left: 8px; padding-right: 8px;">{{ imovel.id }}</td>
+        <td style="padding-left: 8px; padding-right: 8px;">{{ imovel.bloco }}</td>
+        <td style="padding-left: 8px; padding-right: 8px;">{{ imovel.apartamento}}</td>
+        <td style="padding-left: 8px; padding-right: 8px;">{{ imovel.boxGaragem }}</td>
+        <td style="width: 200px; text-align: center; vertical-align: middle;">
+          <button class="btn edit" (click)="editarImovel(imovel.id)">Editar</button>
+          <button style="margin-left: 15px;" class="btn delete" (click)="excluirImovel(imovel.id)">Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
