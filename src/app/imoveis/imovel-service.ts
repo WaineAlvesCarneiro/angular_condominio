@@ -12,7 +12,11 @@ export class ImovelService {
 
   constructor(private http: HttpClient) {}
 
-  getImoveis(page: number = 0, size: number = 10, sort: string = 'bloco', direction: string = 'ASC') {
+  getImoveis(): Observable<Imovel[]> {
+    return this.http.get<Imovel[]>(this.apiUrl);
+  }
+
+  getImoveisPage(page: number = 0, size: number = 10, sort: string = 'bloco', direction: string = 'ASC') {
     const params = {
       page: page.toString(),
       linesPerPage: size.toString(),
@@ -20,7 +24,7 @@ export class ImovelService {
       orderBy: sort
     };
 
-    return this.http.get<PaginatedResponse<Imovel>>(this.apiUrl, { params });
+    return this.http.get<PaginatedResponse<Imovel>>(`${this.apiUrl}/paginado`, { params });
   }
 
   getImovel(id: string): Observable<Imovel> {

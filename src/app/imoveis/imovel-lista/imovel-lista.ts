@@ -16,11 +16,21 @@ export class ImovelLista {
   constructor(private imovelService: ImovelService, private router: Router) {}
 
   ngOnInit(): void {
-    this.carregarImoveis();
+    this.carregarImoveisPage();
   }
 
-  carregarImoveis(page: number = 0) {
-    this.imovelService.getImoveis(page).subscribe(response => {
+  carregarImoveis() {
+    this.imovelService.getImoveis().subscribe({
+      next: (data) => {
+        this.imoveis = data;
+        // console.log('Produtos carregados:', this.produtos);
+      },
+      error: (err) => console.error('Erro ao carregar produtos:', err)
+    });
+  }
+
+  carregarImoveisPage(page: number = 0) {
+    this.imovelService.getImoveisPage(0, 10).subscribe(response => {
       this.imoveis = response.content;
       this.totalPages = response.totalPages;
     });
@@ -36,7 +46,7 @@ export class ImovelLista {
     this.imovelService.excluirImovel(id).subscribe({
       next: () => {
         //console.log('Imovel excluído com sucesso, recarregando lista...');
-        this.carregarImoveis();
+        this.carregarImoveisPage();
       },
       error: (err) => console.error('Erro ao excluir imovel:', err)
     });
