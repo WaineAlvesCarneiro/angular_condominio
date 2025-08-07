@@ -1,9 +1,10 @@
 export interface PaginatedResponse<T> {
-  content: T[];
-  totalElements: number;
-  totalPages: number;
-  number: number;
-  size: number;
-  first: boolean;
-  last: boolean;
+  sucesso: boolean;
+  dados: {
+    items: T[];
+    totalCount: number;
+    pageIndex: number;
+    linesPerPage: number;
+  };
+  erro?: string;
 }

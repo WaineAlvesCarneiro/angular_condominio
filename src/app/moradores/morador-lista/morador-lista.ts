@@ -12,18 +12,40 @@ import { MoradorAdapter } from '../../shared/adapters/morador.adapter';
 })
 export class MoradorLista {
   moradores: Morador[] = [];
-  totalPages: number = 0;
+  totalCount: number = 0;
+  pageIndex: number = 0;
+  linesPerPage: number = 0;
 
   constructor(private moradorService: MoradorService, private router: Router) {}
 
   ngOnInit(): void {
-    this.carregarMoradores();
+    this.carregarMoradoresPage();
   }
 
-  carregarMoradores(page: number = 0) {
-    this.moradorService.getMoradores(page).subscribe(response => {
-      this.moradores = response.content.map(MoradorAdapter.fromApi);
-      this.totalPages = response.totalPages;
+  carregarMoradores() {
+    this.moradorService.getMoradores().subscribe({
+      next: (dados) => {
+        this.moradores = dados;
+        // console.log('Moradores carregados:', this.moradores);
+      },
+      error: (err) => console.error('Erro ao carregar produtos:', err)
+    });
+  }
+
+  carregarMoradoresPage(page: number = 0) {
+    this.moradorService.getMoradoresPage(0, 10, 'nome', 'ASC').subscribe({
+      next: response => {
+        if (response.sucesso) {
+          //console.log('Moradores carregar Page:', response.dados);
+          this.moradores = response.dados.items;
+          this.totalCount = response.dados.totalCount;
+          this.pageIndex = response.dados.pageIndex;
+          this.linesPerPage = response.dados.linesPerPage;
+        } else {
+          console.error('Erro:', response.erro);
+        }
+      },
+      error: err => console.error('Erro na requisição:', err)
     });
   }
 

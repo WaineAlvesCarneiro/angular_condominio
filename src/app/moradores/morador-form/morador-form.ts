@@ -4,7 +4,7 @@ import { MoradorService } from '../morador-service';
 import { Morador } from '../morador.model';
 import { ImovelService } from '../../imoveis/imovel-service';
 import { Imovel } from '../../imoveis/imovel.model';
-import { formatarDataParaInput, formatarDataParaApi } from '../../shared/utils/date-utils';
+import { MoradorAdapter } from '../../shared/adapters/morador.adapter';
 
 @Component({
   selector: 'app-morador-form',
@@ -24,7 +24,7 @@ export class MoradorForm {
     dataInclusao: '',
     dataAlteracao: null,
     imovelId: 0,
-    imovel: undefined
+    imovelDto: undefined
   };
 
   imoveis: Imovel[] = [];
@@ -37,11 +37,12 @@ export class MoradorForm {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.imovelService.getImoveis().subscribe({
       next: (res) => {
-        this.imoveis = res;
+        this.imoveis = res.dados;
+        //console.log('Imoveis carregados:', this.imoveis);
       },
       error: (err) => {
         console.error('Erro ao carregar imóveis', err);
@@ -50,52 +51,38 @@ export class MoradorForm {
 
     if (id) {
       this.moradorService.getMorador(id).subscribe({
-        next: (p) => {
-          this.morador = {
-            ...p,
-            dataEntrada: formatarDataParaInput(p.dataEntrada) || '',
-            dataSaida: p.dataSaida ? formatarDataParaInput(p.dataSaida) : null,
-            dataInclusao: formatarDataParaInput(p.dataInclusao) || '',
-            dataAlteracao: p.dataAlteracao ? formatarDataParaInput(p.dataAlteracao) : null
-          };
+        next: (result) => {
+          if (result.sucesso) {
+            this.morador = MoradorAdapter.fromApi(result.dados);
+            //console.log('Morador carregado:', this.morador);
+          } else {
+            console.error('Erro da API:', result.erro);
+          }
         },
-        error: (err) => console.error('Erro ao carregar morador', err)
+        error: (err) => console.error('Erro HTTP:', err)
       });
     }
   }
 
   salvar() {
-    const dataAtual = new Date().toISOString();
-
-    if (this.morador.id === 0) {
-      this.morador.dataInclusao = dataAtual;
-      this.morador.dataAlteracao = null;
-    } else {
-      this.morador.dataAlteracao = dataAtual;
-    }
-
-    const imovelIdNum = Number(this.morador.imovelId);
-    const imovelSelecionado = this.imoveis.find(i => i.id === imovelIdNum);
+    const imovelSelecionado = this.imoveis.find(i => i.id === Number(this.morador.imovelId));
 
     if (!imovelSelecionado) {
       alert('Imóvel inválido. Verifique o campo e tente novamente.');
       return;
     }
 
-    const moradorToSend: Morador = {
-      id: this.morador.id,
-      nome: this.morador.nome,
-      celular: this.morador.celular,
-      email: this.morador.email,
-      isProprietario: this.morador.isProprietario,
-      dataEntrada: formatarDataParaApi(this.morador.dataEntrada),
-      dataSaida: formatarDataParaApi(this.morador.dataSaida),
-      dataInclusao: formatarDataParaApi(this.morador.dataInclusao),
-      dataAlteracao: this.morador.dataAlteracao ? formatarDataParaApi(this.morador.dataAlteracao) : null,
-      imovelId: imovelIdNum,
-      imovel: imovelSelecionado
-    };
+    this.morador.imovelDto = imovelSelecionado;
 
+    if (this.morador.id === 0) {
+      this.morador.dataInclusao = new Date().toISOString();
+      this.morador.dataAlteracao = null;
+    } else {
+      this.morador.dataAlteracao = new Date().toISOString();
+    }
+    console.log('this.morador:', this.morador);
+    const moradorToSend = MoradorAdapter.toApi(this.morador);
+    console.log('moradorToSend:', moradorToSend);
     const request = this.morador.id
       ? this.moradorService.atualizarMorador(moradorToSend)
       : this.moradorService.adicionarMorador(moradorToSend);

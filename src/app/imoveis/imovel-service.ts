@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Imovel } from './imovel.model';
 import { PaginatedResponse } from '../paginated-response.model';
+import { Result } from '../shared/models/result.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImovelService {
-  private apiUrl = 'http://localhost:8080/imovel';
+  //url JAVA
+  //private apiUrl = 'http://localhost:8080/imovel';
+
+  //url Asp Net Core
+  private apiUrl = 'https://localhost:44369/api/imovel';
 
   constructor(private http: HttpClient) {}
 
-  getImoveis(): Observable<Imovel[]> {
-    return this.http.get<Imovel[]>(this.apiUrl);
+  getImoveis(): Observable<Result<Imovel[]>> {
+    return this.http.get<Result<Imovel[]>>(this.apiUrl);
   }
 
   getImoveisPage(page: number = 0, size: number = 10, sort: string = 'bloco', direction: string = 'ASC') {
     const params = {
       page: page.toString(),
-      linesPerPage: size.toString(),
+      pageSize: size.toString(),
       direction,
       orderBy: sort
     };
@@ -27,22 +32,21 @@ export class ImovelService {
     return this.http.get<PaginatedResponse<Imovel>>(`${this.apiUrl}/paginado`, { params });
   }
 
-  getImovel(id: string): Observable<Imovel> {
-    return this.http.get<Imovel>(`${this.apiUrl}/${id}`);
+  getImovel(id: number): Observable<Imovel> {
+    return this.http.get<Result<Imovel>>(`${this.apiUrl}/${id}`).pipe(
+      map(response => response.dados)
+    );
   }
 
   adicionarImovel(Imovel: Imovel): Observable<Imovel> {
-    //console.log('Salvar Imovel:', Imovel);
     return this.http.post<Imovel>(this.apiUrl, Imovel);
   }
 
   atualizarImovel(Imovel: Imovel): Observable<Imovel> {
-    //console.log('Atualizar Imovel:', Imovel);
     return this.http.put<Imovel>(`${this.apiUrl}/${Imovel.id}`, Imovel);
   }
 
   excluirImovel(id: number): Observable<void> {
-    //console.log('Excluindo Imovel:', id);
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

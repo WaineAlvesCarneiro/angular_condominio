@@ -25,7 +25,7 @@
         <td style="width: 80px; text-align: center; padding-left: 8px; padding-right: 8px;">{{ morador.celular }}</td>
         <td style="width: 70px; text-align: center; padding-left: 8px; padding-right: 8px;">{{ morador.dataEntrada | date:'dd/MM/yyyy':'':'pt-BR' }}</td>
         <td style="width: 70px; text-align: center; padding-left: 8px; padding-right: 8px;">{{ morador.dataSaida | date:'dd/MM/yyyy':'':'pt-BR' }}</td>
-        <td style="width: 90px; text-align: center; padding-left: 8px; padding-right: 8px;">{{ morador.imovel?.bloco + '-' + morador.imovel?.apartamento }}</td>
+        <td style="width: 90px; text-align: center; padding-left: 8px; padding-right: 8px;">{{ morador.imovelDto?.bloco + '-' + morador.imovelDto?.apartamento }}</td>
         <td style="width: 10px; text-align: center; padding-left: 8px; padding-right: 8px;">
           <span class="status" [ngClass]="morador.isProprietario == true ? 'sim' : 'não'">
             {{ morador.isProprietario == true ? 'Sim' : 'Não' }}

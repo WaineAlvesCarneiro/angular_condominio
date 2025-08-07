@@ -9,7 +9,7 @@ export interface Morador {
   dataInclusao: string | null;
   dataAlteracao?: string | null;
   imovelId: number;
-  imovel?: {
+  imovelDto?: {
     id: number;
     bloco: string;
     apartamento: string;

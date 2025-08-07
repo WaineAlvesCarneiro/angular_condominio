@@ -24,12 +24,14 @@ export class ImovelForm implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
     if (id) {
       this.imovelService.getImovel(id).subscribe({
-        next: (p) => this.imovel = p,
-        error: (err) => console.error('Erro ao carregar imoveis', err)
+        next: (imovel) => {
+          this.imovel = imovel;
+        },
+        error: (err) => console.error('Erro ao carregar imóvel:', err)
       });
     }
   }

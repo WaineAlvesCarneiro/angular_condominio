@@ -14,11 +14,11 @@ export class MoradorAdapter {
       dataInclusao: formatarDataParaInput(apiData.dataInclusao) || '',     // obrigatória
       dataAlteracao: apiData.dataAlteracao ? formatarDataParaInput(apiData.dataAlteracao) : null,
       imovelId: apiData.imovelId,
-      imovel: apiData.imovel ? {
-        id: apiData.imovel.id,
-        bloco: apiData.imovel.bloco,
-        apartamento: apiData.imovel.apartamento,
-        boxGaragem: apiData.imovel.boxGaragem
+      imovelDto: apiData.imovelDto ? {
+        id: apiData.imovelDto.id,
+        bloco: apiData.imovelDto.bloco,
+        apartamento: apiData.imovelDto.apartamento,
+        boxGaragem: apiData.imovelDto.boxGaragem
       } : undefined
     };
   }
@@ -35,11 +35,11 @@ export class MoradorAdapter {
       dataInclusao: formatarDataParaApi(morador.dataInclusao),
       dataAlteracao: morador.dataAlteracao ? formatarDataParaApi(morador.dataAlteracao) : null,
       imovelId: morador.imovelId,
-      imovel: morador.imovel ? {
-        id: morador.imovel.id,
-        bloco: morador.imovel.bloco,
-        apartamento: morador.imovel.apartamento,
-        boxGaragem: morador.imovel.boxGaragem
+      imovelDto: morador.imovelDto ? {
+        id: morador.imovelDto.id,
+        bloco: morador.imovelDto.bloco,
+        apartamento: morador.imovelDto.apartamento,
+        boxGaragem: morador.imovelDto.boxGaragem
       } : undefined
     };
   }

@@ -11,7 +11,9 @@ import { Router } from '@angular/router';
 })
 export class ImovelLista {
   imoveis: Imovel[] = [];
-  totalPages: number = 0;
+  totalCount: number = 0;
+  pageIndex: number = 0;
+  linesPerPage: number = 0;
 
   constructor(private imovelService: ImovelService, private router: Router) {}
 
@@ -19,20 +21,30 @@ export class ImovelLista {
     this.carregarImoveisPage();
   }
 
-  carregarImoveis() {
+  getImoveis() {
     this.imovelService.getImoveis().subscribe({
-      next: (data) => {
-        this.imoveis = data;
-        // console.log('Produtos carregados:', this.produtos);
+      next: (dados) => {
+        this.imoveis = dados.dados;
+        // console.log('Imoveis carregados:', this.imoveis);
       },
       error: (err) => console.error('Erro ao carregar produtos:', err)
     });
   }
 
   carregarImoveisPage(page: number = 0) {
-    this.imovelService.getImoveisPage(0, 10).subscribe(response => {
-      this.imoveis = response.content;
-      this.totalPages = response.totalPages;
+    this.imovelService.getImoveisPage(0, 10, 'bloco', 'ASC').subscribe({
+      next: response => {
+        if (response.sucesso) {
+          // console.log('Imoveis carregar Page:', response.dados);
+          this.imoveis = response.dados.items;
+          this.totalCount = response.dados.totalCount;
+          this.pageIndex = response.dados.pageIndex;
+          this.linesPerPage = response.dados.linesPerPage;
+        } else {
+          console.error('Erro:', response.erro);
+        }
+      },
+      error: err => console.error('Erro na requisição:', err)
     });
   }
 
