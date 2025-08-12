@@ -1,0 +1,24 @@
+<div style="display: flex; flex-direction: column; min-height: 100vh;">
+  <h1 style="margin-top: 0px; background-color: darkseagreen; height: 60px; width: 100%; display: flex; justify-content: center; align-items: center;">Gestão de {{ title() }}</h1>
+  <div class="app-header">
+    <nav style="background-color: #d2e9d2; padding: 10px;">
+      <ul style="display: flex; gap: 20px; list-style: none; margin: 0; padding: 0;">
+        <li><a routerLink="/imoveis" routerLinkActive="active">Imóveis</a></li>
+        <li><a routerLink="/moradores" routerLinkActive="active">Moradores</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div style="margin-top: 10px; flex: 1;">
+    <router-outlet></router-outlet>
+  </div>
+
+  <footer class="app-footer" style="background-color: #f5f5f5; padding: 10px; text-align: center;">
+    <p>
+      <strong>Versão:</strong> 1.0.0 <br>
+      <strong>Descrição:</strong> Sistema de gerenciamento de Condomínio desenvolvido em Angular <br>
+      <strong>Autor:</strong> <a href="https://github.com/WaineAlvesCarneiro?tab=repositories" target="_blank">Waine Alves Carneiro</a> <br>
+      <strong>Email:</strong> <a href="mailto:carneirowaine@gmail.com">email</a>
+    </p>
+  </footer>
+</div>
