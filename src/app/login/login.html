@@ -21,7 +21,10 @@
     </div>
 
     <div class="submit-container">
-      <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+      <button type="submit" class="btn primary" [disabled]="isLogging || loginForm.invalid">
+        <span *ngIf="!isLogging">Entrar</span>
+        <span *ngIf="isLogging">Aguarde...</span>
+    </button>
     </div>
   </form>
 </div>

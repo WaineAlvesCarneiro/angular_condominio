@@ -39,7 +39,10 @@
   </div>
 
   <div class="form-actions">
-    <button type="submit" class="btn primary" [disabled]="imovelForm.invalid">Salvar</button>
+    <button type="submit" class="btn primary" [disabled]="isSaving || imovelForm.invalid">
+      <span *ngIf="!isSaving">Salvar</span>
+      <span *ngIf="isSaving">Aguarde...</span>
+    </button>
     <button type="button" class="btn secondary" routerLink="/imoveis">Cancelar</button>
   </div>
 </form>

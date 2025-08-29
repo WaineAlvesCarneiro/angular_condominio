@@ -15,6 +15,7 @@ import { NotificationService } from '../notification/services/notification-servi
 export class Login {
   loginForm: FormGroup;
   errorMessage: string | null = null;
+  isLogging = false;
 
   constructor(
     private fb: FormBuilder,
@@ -29,13 +30,18 @@ export class Login {
   }
 
   onSubmit() {
+    // console.log('this.loginForm.value ', this.loginForm.value);
+    this.isLogging = true;
+
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: () => {
+          this.isLogging = false;
           this.notificationService.showSuccess('Login realizado com sucesso! Bem-vindo(a).');
           this.router.navigate(['/imoveis']);
         },
         error: (err) => {
+          this.isLogging = false;
           this.notificationService.showError('Credenciais inválidas. Tente novamente.');
           console.error(err);
         },

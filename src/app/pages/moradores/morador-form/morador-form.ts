@@ -18,6 +18,7 @@ import { ImovelService } from '../../imoveis/services/imovel-service';
 })
 export class MoradorForm implements OnInit {
   moradorForm!: FormGroup;
+  isSaving = false;
 
   morador: Morador = {
     id: 0,
@@ -111,6 +112,8 @@ export class MoradorForm implements OnInit {
 
     const formValues = this.moradorForm.getRawValue();
 
+    this.isSaving = true;
+
     const imovelSelecionado = this.imoveis.find(i => i.id === Number(formValues.imovelId));
 
     if (!imovelSelecionado) {
@@ -135,10 +138,12 @@ export class MoradorForm implements OnInit {
 
     request.subscribe({
         next: () => {
+          this.isSaving = false;
           this.notificationService.showSuccess('Morador salvo com sucesso!');
           this.router.navigate(['/moradores']);
     },
         error: (err) => {
+          this.isSaving = false;
           if (err.error && err.error.erro) {
             this.notificationService.showAlerta(err.error.erro);
           } else {

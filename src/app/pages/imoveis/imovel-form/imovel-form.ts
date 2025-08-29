@@ -15,6 +15,7 @@ import { ImovelService } from '../services/imovel-service';
 })
 export class ImovelForm implements OnInit {
   imovelForm!: FormGroup;
+  isSaving = false;
 
   imovel: Imovel = {
     id: 0,
@@ -74,6 +75,8 @@ export class ImovelForm implements OnInit {
       return;
     }
 
+    this.isSaving = true;
+
     const imovelSalvar = { ...this.imovel, ...this.imovelForm.getRawValue() };
 
     const request = imovelSalvar.id 
@@ -82,10 +85,12 @@ export class ImovelForm implements OnInit {
 
     request.subscribe({
       next: () => {
+        this.isSaving = false;
         this.notificationService.showSuccess('Imóvel salvo com sucesso!');
         this.router.navigate(['/imoveis']);
       },
       error: (err) => {
+        this.isSaving = false;
         if (err.error && err.error.erro) {
           this.notificationService.showAlerta(err.error.erro);
         } else {
