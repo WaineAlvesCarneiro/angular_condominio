@@ -75,7 +75,8 @@
   </div>
 
   <div class="form-actions">
-    <button type="submit" class="btn primary" [disabled]="isSaving || moradorForm.invalid">
+    <!-- <button type="submit" class="btn primary" [disabled]="isSaving || moradorForm.invalid"> -->
+    <button type="submit" class="btn primary">
       <span *ngIf="!isSaving">Salvar</span>
       <span *ngIf="isSaving">Aguarde...</span>
     </button>

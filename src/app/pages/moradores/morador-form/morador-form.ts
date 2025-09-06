@@ -164,6 +164,6 @@ export class MoradorForm implements OnInit, AfterViewInit {
 
   cancelar(): void {
     this.formSubmetido = false;
-    this.router.navigate(['/imoveis']);
+    this.router.navigate(['/moradores']);
   }
 }
