@@ -1,0 +1,49 @@
+<!-- src\app\pages\imoveis\imovel-form\imovel-form.html -->
+
+<h2>Cadastro de Imóvel</h2>
+
+<form [formGroup]="imovelForm" class="form-container" (ngSubmit)="salvar()" autocomplete="off">
+  <div *ngIf="imovel.id !== 0" class="form-group">
+    <label for="id">Código:</label>
+    <input type="number" id="id" formControlName="id" maxlength="10"/>
+  </div>
+
+  <div class="form-group">
+    <label for="bloco">Bloco:</label>
+    <input id="bloco" formControlName="bloco" maxlength="10" #focusInput/>
+  </div>
+  <div *ngIf="imovelForm.get('bloco')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="imovelForm.get('bloco')?.errors?.['required']">
+      Bloco é obrigatório.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="apartamento">Apartamento:</label>
+    <input id="apartamento" formControlName="apartamento" maxlength="10"/>
+  </div>
+  <div *ngIf="imovelForm.get('apartamento')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="imovelForm.get('apartamento')?.errors?.['required']">
+      Apartamento é obrigatório.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="boxGaragem">Box Garagem:</label>
+    <input id="boxGaragem" formControlName="boxGaragem" />
+  </div>
+  <div *ngIf="imovelForm.get('boxGaragem')?.invalid && (formSubmetido)" class="validation-message">
+    <div *ngIf="imovelForm.get('boxGaragem')?.errors?.['required']">
+      Box Garagem é obrigatório.
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <!-- <button type="submit" class="btn primary" [disabled]="isSaving || imovelForm.invalid"> -->
+    <button type="submit" class="btn primary" >
+      <span *ngIf="!isSaving">Salvar</span>
+      <span *ngIf="isSaving">Aguarde...</span>
+    </button>
+    <button type="button" class="btn secondary" (click)="cancelar()">Cancelar</button>
+  </div>
+</form>
