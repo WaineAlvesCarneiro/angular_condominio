@@ -1,0 +1,38 @@
+<div class="app-container">
+  <header class="app-header">
+    <h1>{{ title() }}</h1>
+  </header>
+  <div class="app-body">
+    <aside class="app-sidebar" [class.minimized]="isSidebarMinimized"
+        (mouseenter)="isSidebarMinimized = false"
+          (mouseleave)="isSidebarMinimized = true">
+      <nav class="main-nav">
+        <ul>
+          <li>
+            <a routerLink="/imoveis" routerLinkActive="active">
+              <span *ngIf="!isSidebarMinimized">Imóveis</span>
+              <span *ngIf="isSidebarMinimized">🏠</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/moradores" routerLinkActive="active">
+              <span *ngIf="!isSidebarMinimized">Moradores</span>
+              <span *ngIf="isSidebarMinimized">👥</span>
+            </a>
+          </li>
+        </ul>
+        <hr>
+        <button (click)="logout()">
+          <span *ngIf="!isSidebarMinimized">Sair</span>
+          <span *ngIf="isSidebarMinimized">🚪</span>
+        </button>
+      </nav>
+    </aside>
+    <main class="main-content" [class.minimized]="isSidebarMinimized">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  <footer class="app-footer">
+    <p>&copy; Condomínio 2025</p>
+  </footer>
+</div>
